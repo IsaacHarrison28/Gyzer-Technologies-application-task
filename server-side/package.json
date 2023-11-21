@@ -1,0 +1,15 @@
+{
+  "name": "server-side",
+  "version": "1.0.0",
+  "description": "The server side code for the Gyzer Technologies front end developer internship role.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Isaac Harrison Tembo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.7.0"
+  }
+}
