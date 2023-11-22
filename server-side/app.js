@@ -1,12 +1,12 @@
 const Express = require("express");
 const app = Express();
-const port = process.env.PORT || 5000;
+const cors = require("cors");
 const allMoviesRouter = require("./routes/get-all-movies");
 
-app.use("/movies", allMoviesRouter);
+//handle CORS errors
+app.use(cors());
+app.use(Express.json());
 
-app.listen(() => {
-  console.log(`Server running on port ${port}`);
-});
+app.use("/movies", allMoviesRouter);
 
 module.exports = app;
