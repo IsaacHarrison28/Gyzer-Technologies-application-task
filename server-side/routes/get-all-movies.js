@@ -3,6 +3,8 @@ const router = Express.Router();
 const fetch = require("node-fetch");
 const auth = require("../secrets/authorization");
 
+//connect to database
+
 router.get("/", (req, res, next) => {
   const url =
     "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1";
@@ -30,3 +32,7 @@ router.get("/", (req, res, next) => {
 });
 
 module.exports = router;
+
+//3PHIObcbov5RsFuf
+
+//mongodb+srv://sateonlineservices:<password>@cluster0.bdn2lem.mongodb.net/?retryWrites=true&w=majority
