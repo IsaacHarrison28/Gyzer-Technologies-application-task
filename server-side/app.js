@@ -1,15 +1,41 @@
 const Express = require("express");
 const mongoose = require("mongoose");
 const app = Express();
-const cors = require("cors");
+const retry = require("retry");
 const bodyParser = require("body-parser");
 const allMoviesRouter = require("./routes/get-all-movies");
 const favoriteMovieRouter = require("./routes/favorites");
 
 //connect to database
-mongoose.connect(
-  "mongodb+srv://sateonlineservices:A2ecsVk6pmuI6L4B@testcluster.6fiffgx.mongodb.net/?retryWrites=true&w=majority"
-);
+const connectWithRetry = () => {
+  const operation = retry.operation({
+    retries: 5,
+    factor: 3,
+    minTimeout: 1000,
+    maxTimeout: 60000,
+    randomize: true,
+  });
+
+  operation.attempt(async (currentAttempt) => {
+    try {
+      await mongoose.connect(
+        "mongodb+srv://sateonlineservices:A2ecsVk6pmuI6L4B@testcluster.6fiffgx.mongodb.net/?retryWrites=true&w=majority"
+      );
+      console.log("Connected to MongoDB");
+    } catch (err) {
+      console.error(
+        `Error connecting to MongoDB (attempt ${currentAttempt}):`,
+        err.message
+      );
+      if (operation.retry(err)) {
+        return;
+      }
+    }
+  });
+};
+
+// Call the connectWithRetry function
+connectWithRetry();
 
 //handle CORS errors
 app.use(bodyParser.json());
