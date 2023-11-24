@@ -53,6 +53,10 @@ nav {
   font-family: "Kanit", sans-serif;
 }
 
+#active-link {
+  border-bottom: 2px solid var(--active-tab-color);
+}
+
 /* Banner section styles */
 .banner-container {
   background: url("./images/banner-backgroundjpg.jpg");
@@ -111,6 +115,7 @@ nav {
   flex-wrap: wrap;
   overflow: hidden;
   gap: 0.5rem;
+  margin-bottom: 5rem;
 }
 
 .movie-card {
@@ -175,6 +180,7 @@ nav {
   width: fit-content;
   margin-top: -146px;
   margin-left: 130px;
+  cursor: pointer;
 }
 
 .favorite-icon {
@@ -184,4 +190,71 @@ nav {
 
 .favorite-icon.favorite {
   fill: yellow;
+}
+
+/* Large screen view */
+@media (min-width: 590px) {
+  #site-name {
+    font-size: 3rem;
+  }
+
+  .nav-link {
+    font-size: 1.2rem;
+  }
+
+  .banner-container {
+    height: 50vh;
+    min-height: 400px;
+    max-height: 500px;
+  }
+
+  .banner-content {
+    margin-inline-start: 4rem;
+  }
+
+  #banner-headline {
+    font-size: 4rem;
+  }
+
+  #banner-sub-heading {
+    font-size: 2rem;
+  }
+
+  #movies {
+    margin-top: 4rem;
+  }
+
+  #section-heading {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .movies-container {
+    gap: 2rem;
+  }
+
+  .movie-card {
+    width: 172px;
+    height: 250px;
+    border-radius: 0.7rem;
+    background: rgba(248, 248, 248, 1);
+  }
+
+  .movie-title {
+    margin-top: 0.8rem;
+  }
+
+  #movie-title {
+    font-size: 1rem;
+    line-height: 24px;
+  }
+
+  .movie-info {
+    margin-top: 0.5rem;
+    padding-inline: 1rem;
+  }
+
+  #info {
+    font-size: 0.6rem;
+  }
 }
