@@ -7,7 +7,6 @@ function getMoviesList() {
     .then((res) => res.json())
     .then((movieList) => {
       //dynamically add data to movie card in html for each movie
-
       for (let i = 0; i < movieList.results.length; i++) {
         //card container
         let movieCard = document.createElement("div");
@@ -57,6 +56,13 @@ function getMoviesList() {
         //favorite icon
         let favoriteIconContainer = document.createElement("div");
         favoriteIconContainer.classList.add("movie-actions");
+        favoriteIconContainer.addEventListener("click", () => {
+          //add the clicked movie to favorites table
+          addToFavorite(
+            movieList.results[i].original_title,
+            movieList.results[i].id
+          );
+        });
         favoriteIconContainer.innerHTML = `
             <svg
               class="favorite-icon"
@@ -84,3 +90,30 @@ function getMoviesList() {
 }
 //invoke function
 getMoviesList();
+
+function addToFavorite(movieTitle, movieId) {
+  const bodyData = {
+    title: movieTitle,
+    movieId: movieId,
+  };
+
+  fetch("http://localhost:5000/favorite", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bodyData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Successfully created the resource:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
