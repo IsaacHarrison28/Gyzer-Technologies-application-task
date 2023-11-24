@@ -1,6 +1,7 @@
 const Express = require("express");
 const mongoose = require("mongoose");
 const app = Express();
+const cors = require("cors");
 const retry = require("retry");
 const bodyParser = require("body-parser");
 const allMoviesRouter = require("./routes/get-all-movies");
@@ -39,6 +40,7 @@ connectWithRetry();
 
 //handle CORS errors
 app.use(bodyParser.json());
+app.use(cors());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); //The * allows any url to access our API but if you want
   //to explicitly allow a certain url only, add it in place of * and it'll allow only that url

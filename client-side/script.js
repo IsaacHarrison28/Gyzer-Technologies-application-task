@@ -60,7 +60,8 @@ function getMoviesList() {
           //add the clicked movie to favorites table
           addToFavorite(
             movieList.results[i].original_title,
-            movieList.results[i].id
+            movieList.results[i].id,
+            movieList.results[i].poster_path
           );
         });
         favoriteIconContainer.innerHTML = `
@@ -88,12 +89,12 @@ function getMoviesList() {
     })
     .catch((err) => console.error(err));
 }
-//invoke function
 getMoviesList();
 
-function addToFavorite(movieTitle, movieId) {
+function addToFavorite(movieTitle, movieId, cover) {
   const bodyData = {
     title: movieTitle,
+    coverImage: cover,
     movieId: movieId,
   };
 
