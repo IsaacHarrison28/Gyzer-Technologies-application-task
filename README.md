@@ -66,3 +66,13 @@ npm start
 which will start the server and allow mongoose to connect to the database to which this will be confirmed with a message as shown below:
 
 ![connected database message](./images//connected-database.png)
+
+#### 5. Open the front end
+
+To launvh the front end portion of the project, navigate to the 'client-side' directory while you leave the server running. You can use the file explorer containing the folder structure as shown previously and open the 'index.html' that is in 'client-side'
+
+![home page](./images//index-html.png)
+
+#### 6. Congratulations
+
+You can now use the site and test everything freely.
