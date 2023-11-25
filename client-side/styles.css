@@ -188,7 +188,7 @@ nav {
   fill: white;
 }
 
-.favorite-icon.favorite {
+.movie-actions.favorite svg {
   fill: yellow;
 }
 

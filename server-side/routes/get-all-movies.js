@@ -2,8 +2,10 @@ const Express = require("express");
 const router = Express.Router();
 const fetch = require("node-fetch");
 const auth = require("../secrets/authorization");
+const favoriteMovie = require("../models/favoritemovie");
 
-//connect to database
+//if a movie is both in the api list and database list, it should have a new favorite: true added to the object
+//and this can be added to the
 
 router.get("/", (req, res, next) => {
   const url =
@@ -18,7 +20,22 @@ router.get("/", (req, res, next) => {
 
   fetch(url, options)
     .then((res) => res.json())
-    .then((nowPlayingList) => {
+    .then(async (nowPlayingList) => {
+      //loop through the movies to check for favorite movies
+      for (let i = 0; i < nowPlayingList.results.length; i++) {
+        let favorite = await isFavorite(
+          JSON.stringify(nowPlayingList.results[i].id)
+        );
+
+        //check if it is a favorite movie
+        if (favorite) {
+          nowPlayingList.results[i].favorite = true;
+        } else {
+          nowPlayingList.results[i].favorite = false;
+        }
+      }
+
+      //return the values with a favorite field added to each movie
       res.status(200).json(nowPlayingList);
     })
     .catch((err) => {
@@ -30,5 +47,24 @@ router.get("/", (req, res, next) => {
       });
     });
 });
+
+async function isFavorite(id) {
+  const favorites = await favoriteMovie
+    .find()
+    .then((useFavs) => {
+      return useFavs;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  let findFavorites = favorites.find((movie) => movie.movieId === id);
+
+  if (findFavorites) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 module.exports = router;

@@ -56,6 +56,9 @@ function getMoviesList() {
         //favorite icon
         let favoriteIconContainer = document.createElement("div");
         favoriteIconContainer.classList.add("movie-actions");
+        if (movieList.results[i].favorite === true) {
+          favoriteIconContainer.classList.add("favorite");
+        }
         favoriteIconContainer.addEventListener("click", () => {
           //add the clicked movie to favorites table
           addToFavorite(
