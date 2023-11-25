@@ -4,9 +4,6 @@ const fetch = require("node-fetch");
 const auth = require("../secrets/authorization");
 const favoriteMovie = require("../models/favoritemovie");
 
-//if a movie is both in the api list and database list, it should have a new favorite: true added to the object
-//and this can be added to the
-
 router.get("/", (req, res, next) => {
   const url =
     "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1";
