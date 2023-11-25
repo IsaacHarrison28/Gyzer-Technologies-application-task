@@ -32,7 +32,3 @@ router.get("/", (req, res, next) => {
 });
 
 module.exports = router;
-
-//3PHIObcbov5RsFuf
-
-//mongodb+srv://sateonlineservices:<password>@cluster0.bdn2lem.mongodb.net/?retryWrites=true&w=majority
