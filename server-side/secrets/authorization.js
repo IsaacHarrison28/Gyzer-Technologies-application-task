@@ -1,0 +1,4 @@
+const header_auth =
+  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NGZiMGYxYTNlZWMzZjJmZWJlMmZlOGNjMzNkMWJmZCIsInN1YiI6IjY1NWNlNWVhM2Q3NDU0MDEzYmU2MmZlNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ItbMcmnMUbyoaJLqLn9KqjG9oSs_Zt_gN7lWB-2Qnqg";
+
+module.exports = header_auth;
