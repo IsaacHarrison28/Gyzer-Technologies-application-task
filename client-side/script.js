@@ -1,12 +1,25 @@
 let movieListContainer = document.getElementById("movies-cards-container");
 
 function getMoviesList() {
+  //loading
+  const LoadingContainer = document.createElement("div");
+  LoadingContainer.classList.add("loading");
+  LoadingContainer.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+      <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+      <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/>
+    </svg>
+  `;
+  movieListContainer.append(LoadingContainer);
+
+  //pull data from api
   fetch("http://localhost:5000/movies/", {
     method: "GET",
   })
     .then((res) => res.json())
     .then((movieList) => {
       //dynamically add data to movie card in html for each movie
+      console.log(movieList);
       for (let i = 0; i < movieList.results.length; i++) {
         //card container
         let movieCard = document.createElement("div");
@@ -59,7 +72,9 @@ function getMoviesList() {
         if (movieList.results[i].favorite === true) {
           favoriteIconContainer.classList.add("favorite");
         }
+
         favoriteIconContainer.addEventListener("click", () => {
+          favoriteIconContainer.classList.add("favorite");
           //add the clicked movie to favorites table
           addToFavorite(
             movieList.results[i].original_title,
@@ -89,6 +104,31 @@ function getMoviesList() {
         //add to the page
         movieListContainer.append(movieCard);
       }
+
+      //remove loader
+      movieListContainer.removeChild(LoadingContainer);
+
+      //create a button that displays the current page from the api
+      const pageContainer = document.createElement("div");
+      pageContainer.classList.add("page-container");
+      const pageNumber = document.createElement("button");
+      pageNumber.id = "page-number";
+      pageNumber.innerText = `Page: ${movieList.page}`;
+      const nextButton = document.createElement("div");
+      nextButton.classList.add("next");
+      nextButton.addEventListener("click", () => {
+        getNewPage(movieList.page + 1);
+      });
+      nextButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
+        </svg>
+      `;
+      pageContainer.append(pageNumber);
+      pageContainer.append(nextButton);
+      //add to the page
+      movieListContainer.append(pageContainer);
     })
     .catch((err) => console.error(err));
 }
@@ -114,10 +154,16 @@ function addToFavorite(movieTitle, movieId, cover) {
       }
       return response.json();
     })
-    .then((data) => {
-      console.log("Successfully created the resource:", data);
-    })
     .catch((error) => {
       console.error("Error:", error);
     });
+}
+
+function getNewPage(pageNumber) {
+  fetch("http://localhost:5000/movies/newPage", {
+    method: "POST",
+    body: {
+      page: pageNumber,
+    },
+  });
 }
