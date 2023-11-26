@@ -5,8 +5,9 @@ const auth = require("../secrets/authorization");
 const favoriteMovie = require("../models/favoritemovie");
 
 router.get("/", (req, res, next) => {
-  const url =
-    "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1";
+  let page = Math.floor(Math.random() * 106) + 1;
+  console.log(page);
+  const url = `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${page}`;
   const options = {
     method: "GET",
     headers: {

@@ -1,7 +1,9 @@
-let moviesCardContainer = document.getElementsByClassName("favorite-movies")[0];
+let moviesCardContainer = document.getElementById("favorite-movies-container");
 
 function getFavoriteMovies() {
-  moviesCardContainer.innerHTML = "";
+  if (moviesCardContainer !== null) {
+    moviesCardContainer.innerHTML = "";
+  }
   //loading spinner
   const LoadingContainer = document.createElement("div");
   LoadingContainer.classList.add("loading");
@@ -11,7 +13,9 @@ function getFavoriteMovies() {
       <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/>
     </svg>
   `;
-  moviesCardContainer.append(LoadingContainer);
+  if (moviesCardContainer !== null) {
+    moviesCardContainer.append(LoadingContainer);
+  }
 
   //pull data from database
   fetch("http://localhost:5000/favorite", {
@@ -56,16 +60,21 @@ function getFavoriteMovies() {
         card.append(coverContainer);
         card.append(titleContainer);
         //add to page
-        moviesCardContainer.append(card);
+        if (moviesCardContainer !== null) {
+          moviesCardContainer.append(card);
+        }
       }
-      moviesCardContainer.removeChild(LoadingContainer);
+      if (moviesCardContainer !== null) {
+        moviesCardContainer.removeChild(LoadingContainer);
+      }
     });
 }
+getFavoriteMovies();
 
 //delete item from favorites
-function deleteFavorite(id) {
+async function deleteFavorite(id) {
   const bodyData = {
-    movieId: id,
+    movieId: await id,
   };
   fetch("http://localhost:5000/favorite", {
     method: "DELETE",
@@ -82,11 +91,13 @@ function deleteFavorite(id) {
     })
     .then((data) => {
       console.log("Successfully removed resource");
-      getFavoriteMovies();
+      location.reload();
+      return true;
     })
     .catch((error) => {
       console.error("Error:", error);
+      return false;
     });
 }
 
-getFavoriteMovies();
+export { deleteFavorite };

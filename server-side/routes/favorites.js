@@ -1,5 +1,6 @@
 const Express = require("express");
 const router = Express.Router();
+const mongoose = require("mongoose");
 const favoriteMovie = require("../models/favoritemovie");
 
 router.get("/", (req, res) => {

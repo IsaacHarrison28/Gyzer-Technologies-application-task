@@ -19,7 +19,6 @@ function getMoviesList() {
     .then((res) => res.json())
     .then((movieList) => {
       //dynamically add data to movie card in html for each movie
-      console.log(movieList);
       for (let i = 0; i < movieList.results.length; i++) {
         //card container
         let movieCard = document.createElement("div");
@@ -28,6 +27,7 @@ function getMoviesList() {
         let imageContainer = document.createElement("div");
         imageContainer.classList.add("movie-image-container");
         let coverImage = document.createElement("img");
+        coverImage.loading = "lazy";
         coverImage.src = `https://www.themoviedb.org/t/p/w220_and_h330_face${movieList.results[i].poster_path}`;
         coverImage.title = movieList.results[i].original_title;
         coverImage.alt = movieList.results[i].original_title;
@@ -74,13 +74,15 @@ function getMoviesList() {
         }
 
         favoriteIconContainer.addEventListener("click", () => {
-          favoriteIconContainer.classList.add("favorite");
-          //add the clicked movie to favorites table
-          addToFavorite(
-            movieList.results[i].original_title,
-            movieList.results[i].id,
-            movieList.results[i].poster_path
-          );
+          if (!favoriteIconContainer.classList.contains("favorite")) {
+            favoriteIconContainer.classList.add("favorite");
+            //add the clicked movie to favorites table
+            addToFavorite(
+              movieList.results[i].original_title,
+              movieList.results[i].id,
+              movieList.results[i].poster_path
+            );
+          }
         });
         favoriteIconContainer.innerHTML = `
             <svg
@@ -117,7 +119,7 @@ function getMoviesList() {
       const nextButton = document.createElement("div");
       nextButton.classList.add("next");
       nextButton.addEventListener("click", () => {
-        getNewPage(movieList.page + 1);
+        location.reload();
       });
       nextButton.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
@@ -157,13 +159,4 @@ function addToFavorite(movieTitle, movieId, cover) {
     .catch((error) => {
       console.error("Error:", error);
     });
-}
-
-function getNewPage(pageNumber) {
-  fetch("http://localhost:5000/movies/newPage", {
-    method: "POST",
-    body: {
-      page: pageNumber,
-    },
-  });
 }
